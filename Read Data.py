@@ -26,3 +26,16 @@ data_frame.columns
 data_frame.count()
 
 data_frame.summary().show()
+
+#data cleaning
+data_frame.na.drop().count()
+data_frame.select('gender').distinct().rdd.map(lambda r: r[0]).collect()
+spark1.sql("SELECT * FROM DATA WHERE GENDER = 'Other'").show()
+data_frame= data_frame.filter(data_frame.gender != 'Other')
+data_frame.count()
+data_frame.select('smoking_status').distinct().rdd.map(lambda r: r[0]).collect()
+data_frame = data_frame.filter(data_frame.smoking_status != 'Unknown')
+data_frame.count()
+data_frame.groupBy('gender').count().show()
+data_frame= data_frame.drop(data_frame['id'])
+data_frame.columns
