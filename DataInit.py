@@ -18,8 +18,11 @@ Original file is located at
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import count
 
-def get_data_frame(spark_session):
-  data_frame = spark_session.read.csv('/content/sample_data/healthcare-dataset-stroke-data.csv',inferSchema=True,header=True)
+spark1 = SparkSession.builder.appName('Stroke').getOrCreate()
+data_frame = spark1.read.csv('/content/sample_data/healthcare-dataset-stroke-data.csv',inferSchema=True,header=True)
+data_frame.createOrReplaceTempView("DATA")
+
+def get_data_frame():
   return data_frame
 
 # Show summary information from dataset
@@ -31,11 +34,11 @@ def data_summary_show(data_frame):
   data_frame.summary().show()
 
 # Return the cleaned up dataset
-def data_cleaning(data_frame, spark_session):
+def data_cleaning(data_frame):
   print("***Cleaning the dataset***:")
   data_frame.na.drop().count()
   data_frame.select('gender').distinct().rdd.map(lambda r: r[0]).collect()
-  spark_session.sql("SELECT * FROM DATA WHERE GENDER = 'Other'").show()
+  spark1.sql("SELECT * FROM DATA WHERE GENDER = 'Other'").show()
   data_frame= data_frame.filter(data_frame.gender != 'Other')
   data_frame.count()
   data_frame.select('smoking_status').distinct().rdd.map(lambda r: r[0]).collect()
