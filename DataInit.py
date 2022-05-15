@@ -30,23 +30,24 @@ def data_summary_show(data_frame):
   data_frame.printSchema()
   data_frame.show()
   data_frame.columns
-  data_frame.count()
   data_frame.summary().show()
 
 # Return the cleaned up dataset
 def data_cleaning(data_frame):
   print("***Cleaning the dataset***:")
-  data_frame.na.drop().count()
+  print("***Drop missing values***")
+  data_frame.na.drop()
   data_frame.select('gender').distinct().rdd.map(lambda r: r[0]).collect()
   spark1.sql("SELECT * FROM DATA WHERE GENDER = 'Other'").show()
+  print("***Remove gender == 'Other'***:")
   data_frame= data_frame.filter(data_frame.gender != 'Other')
-  data_frame.count()
+  print("***Remove smoking_status == 'Unknown'***")
   data_frame.select('smoking_status').distinct().rdd.map(lambda r: r[0]).collect()
   data_frame = data_frame.filter(data_frame.smoking_status != 'Unknown')
-  data_frame.count()
-  data_frame.groupBy('gender').count().show()
+  print("***Remove bmi == 'N/A'***")
+  data_frame = data_frame.filter(data_frame.bmi != 'N/A')
+  print("***Drop column 'id'***")
   data_frame= data_frame.drop(data_frame['id'])
-  data_frame.columns
   print("***Finished cleaning the dataset***:")
 
   return data_frame
