@@ -14,6 +14,5 @@ Analyzing the actual statistics, we can conclude that studying the characteristi
 The project contains:
 - Data manipulation using pyspark dataframe (read, process, data clean, etc.)
 - Stroke related plots using python;
-- Neural newtorks with dropout layers;
-- R plots: ridgeline plots, scatter plots, 3D plot etc;
-- Rmarkdown presentation +html.
+- Neural newtorks with dropout layers 
+- R plots;
